@@ -1,0 +1,20 @@
+/* Stiziles */
+
+html, body {
+  background: white;
+}
+
+/* app-container */
+
+.app-container {
+  padding: 1px 30px;
+  background-color: #f5f5f5;
+}
+
+.nytd-player-container {
+  color: grey;
+
+  .playing {
+    background-color: green;
+  }
+}
