@@ -1,7 +1,10 @@
-"use strict";
+'use strict';
 
 // React
 import React from 'react/addons';
+
+// Polyfills
+import 'fetch-polyfill';
 
 // Custom Components
 import VideoPlayer from './VideoPlayer';
@@ -55,10 +58,33 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
     });
   }
 
+  _setNextVideo(videoId) {
+    let nextVideo;
+    let choosNext = false;
+    // Iterate of the playlist to find the current video and turn the flag to choose the next video in the playlist.
+    this.state.playlist.every(item => {
+      if ( choosNext === true ) {
+        nextVideo = item;
+        return false;
+      }
+      else if ( item.id === videoId ) {
+        choosNext = true;
+      }
+      return true;
+    });
+    // If we didn't find the next video because we fail off the playlist, choose the first video to loop back to the begining.
+    if ( !nextVideo ) {
+      nextVideo = this.state.playlist[0];
+    }
+
+    this.setState({
+      currentVideo: nextVideo,
+      playCurrentVideo: true
+    });
+  }
+
   _renderLoading() {
-    return (
-      <h1>Loading...</h1>
-    );
+    return <h1>Loading...</h1>;
   }
 
   _renderVideoPlayer() {
@@ -67,9 +93,13 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
         <VideoPlayer
           video={this.state.currentVideo}
           playCurrentVideo={this.state.playCurrentVideo}
+          playlistCat={this.state.playlistCat}
+          setCurrentVideo={this._setCurrentVideo.bind(this)}
+          setNextVideo={this._setNextVideo.bind(this)}
         />
         <Playlist
           currentVideo={this.state.currentVideo}
+          playCurrentVideo={this.state.playCurrentVideo}
           playlistCat={this.state.playlistCat}
           playlist={this.state.playlist}
           selectVideo={this._setCurrentVideo.bind(this)}
