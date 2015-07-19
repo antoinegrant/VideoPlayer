@@ -4,7 +4,7 @@
  * This file is set up for serving the distribution version. It will be compiled to dist/ by default
  */
 
-"use strict";
+'use strict';
 
 var webpack = require('webpack');
 

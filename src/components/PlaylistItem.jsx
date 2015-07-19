@@ -12,16 +12,25 @@ let PlaylistItem = class PlaylistItem extends React.Component {
   }
 
   render() {
-    let image = this.props.images[2];
+    let image = this.props.images[4];
     let classNames = cx({
       playing: !!this.props.playing
     });
+
+    let cta = (<span className="play-holder"> <p className="play"><i className="icon default"></i></p> </span>);
+    if ( this.props.playing ) {
+      cta = (<span className="now-playing-holder">Now Playing</span>);
+    }
+
     return (
       <li className={classNames} onClick={this._onClick.bind(this)}>
-        <span className='thumbnail'><img src={this.props.graphicsDomain + image.url} width={image.width} height={image.height} /></span><br />
-        <span className='category'>{this.props.playlistCat.title}</span><br />
-        <span className='title'>{this.props.title}</span><br />
+        <span className='thumbnail'>
+          <img src={this.props.graphicsDomain + image.url} />
+          {cta}
+        </span>
+        <span className='category'>{this.props.playlistCat.title}</span>
         <span className='duration'>{this.props.duration}</span>
+        <span className='title'>{this.props.title}</span><br />
       </li>
     );
   }

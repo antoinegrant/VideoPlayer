@@ -26,7 +26,5 @@ Thank you,
 The NYT Video Team
 
 
-- Video API
 - Choosing the right image
-- Custom poster frame!?
 - Make it NYTimesian

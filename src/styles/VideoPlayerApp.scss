@@ -1,0 +1,205 @@
+@import './mixins/buttons';
+
+/* Variables */
+$mobileAppContainerMargin: 10px;
+$boxPadding: 30px;
+$elementSpacing: 18px;
+
+/* Mixins */
+@mixin column-count($num) {
+  -webkit-column-count: $num;
+     -moz-column-count: $num;
+          column-count: $num;
+}
+@mixin column-width($val) {
+  -webkit-column-width: $val;
+     -moz-column-width: $val;
+          column-width: $val;
+}
+@mixin column-gap($val) {
+  -webkit-column-gap: $val;
+     -moz-column-gap: $val;
+          column-gap: $val;
+}
+
+.app-container {
+  padding: 1px 30px;
+  margin: -1px 0;
+  background-color: #f5f5f5;
+
+  @media (max-width: 499px) {
+    padding: 1px $mobileAppContainerMargin;
+  }
+}
+
+.nytd-player-container {
+  color: grey;
+
+  // Player
+  .nytd-player-wrapper {
+    position: relative;
+    height: 0px;
+    padding-bottom: 56.23%;
+    overflow: hidden;
+    background-color: black;
+    cursor: pointer;
+
+    @media (max-width: 499px) {
+      /* Make the video take the fullwidth of the viewport */
+      margin-left: -$mobileAppContainerMargin;
+      margin-right: -$mobileAppContainerMargin;
+    }
+  }
+
+  // Current video description
+  .nytd-player-description {
+    background-color: white;
+    padding: $elementSpacing $boxPadding 0 $boxPadding;
+    margin: 0;
+
+    .nytd-player-description-head {
+      border-bottom: 1px #e6e6e6 solid;
+      padding-bottom: 12px;
+
+      h4 {
+        font-size: 14px;
+        color: #d9471e;
+        font-family: Georgia,serif;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 10px 0;
+      }
+      h1 {
+        font-family: Georgia,serif;
+        font-size: 40px;
+        color: #333333;
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    .nytd-player-description-content {
+      padding: 10px 0 $elementSpacing 0;
+
+      h5 {
+        font-size: 12px;
+        color: #888;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+      }
+      p {
+        font-family: georgia,'times new roman',serif;
+        color: #444;
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
+  }
+
+  // Playlist
+  .nytd-playlist-wrapper {
+    padding: 0;
+    margin: $elementSpacing 0;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      text-align: left;
+      overflow: hidden;
+
+      li {
+        display: block;
+        float: left;
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+
+        /* 2 items item */
+        @media (max-width: 499px) {
+          width: 49%;
+          margin-left: 2%;
+          &:nth-child(2n+1) {
+            margin-left: 0;
+          }
+          &:nth-child(3n+0) {
+            clear: both;
+          }
+        }
+
+        /* 3 items layout */
+        @media (min-width: 500px) and (max-width: 649px) {
+          width: 32%;
+          margin-left: 2%;
+          &:nth-child(3n+1) {
+            margin-left: 0;
+          }
+          &:nth-child(4n+0) {
+            clear: both;
+          }
+        }
+
+        /* 4 items layout */
+        @media (min-width: 650px) {
+          width: 23.5%;
+          margin-left: 2%;
+          &:nth-child(4n+1) {
+            margin-left: 0;
+          }
+          &:nth-child(5n+0) {
+            clear: both;
+          }
+        }
+
+        &.playing {
+          color: #537d9d;
+          .thumbnail img {
+            opacity: 0.5;
+          }
+        }
+
+        .thumbnail {
+          display: block;
+          position: relative;
+
+          img {
+              width: 100%;
+          }
+
+          @include nytd-play-button();
+
+          .now-playing-holder {
+            position: absolute;
+            left: 14px;
+            bottom: 14px;
+            color: white;
+            font-weight: bold;
+          }
+
+        }
+        .category {
+          font-size: 13px;
+          font-weight: 400;
+          color: #888;
+          margin: 1px 0 9px 0;
+          text-transform: capitalize;
+          line-height: 14px;
+        }
+        .title {
+          display: block;
+          font-family: arial,helvetica,sans-serif;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 26px;
+        }
+        .duration {
+          font-size: 12px;
+          margin-left: 12px;
+          color: #aaa;
+          cursor: default;
+        }
+      }
+    }
+  }
+}

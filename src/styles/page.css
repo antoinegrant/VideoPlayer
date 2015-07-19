@@ -1,0 +1,31 @@
+html, body {
+  background: white;
+}
+
+header {
+  border-bottom: 1px solid #ccc;
+  height: 54px;
+  padding-top: 25px;
+  position: relative;
+}
+
+header .branding {
+  width: 100%;
+  z-index: 1;
+  text-align: center;
+  line-height: 29px;
+}
+
+header .branding a {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* NOTE THAT THIS HAS BEEN IMPLEMENTED QUICKLY AS A PLACE HOLDER  */
+header .branding .logo {
+  display: inline-block;
+}
+
+header .branding img {
+  width: 70%;
+}

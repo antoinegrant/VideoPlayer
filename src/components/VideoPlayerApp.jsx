@@ -12,10 +12,9 @@ import Playlist from './Playlist';
 
 // CSS that gets injected in the page
 import 'normalize.css';
-import '../styles/main.scss';
+import '../styles/VideoPlayerApp.scss';
 
 // Assets
-// import imageURL from '../images/yeoman.png';
 
 // Component
 let VideoPlayerApp = class VideoPlayerApp extends React.Component {
@@ -31,24 +30,30 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
   }
 
   componentWillMount() {
-    // Fetch the data
-    fetch('/api/playlist.json')
-      // Parse the response to json
-      .then(r => r.json())
-      .then(json => {
-        // Update the state of the component with the json response and turning the isLoadig flag to false which triggers a re-render
-        this.setState({
-          isLoading: false,
-          playlistCat: {
-            id: 'travel',
-            title: 'Travel'
-          },
-          playlist: json,
-          currentVideo: json[0]
-        });
-      })
-      // We got an issue with the api call, set the state of the component to warn the use if the issue and log the error.
-      .catch(e => window.console.log(e));
+
+    /* Simulate a wait time for the service call to complete */
+    window.setTimeout(() => {
+
+      // Fetch the data
+      fetch('/api/playlist.json')
+        // Parse the response to json
+        .then(r => r.json())
+        .then(json => {
+          // Update the state of the component with the json response and turning the isLoadig flag to false which triggers a re-render
+          this.setState({
+            isLoading: false,
+            playlistCat: {  /* Hardoced for the assignment */
+              id: 'travel',
+              title: 'Travel'
+            },
+            playlist: json,
+            currentVideo: json[0]  /* Defaults to the first video */
+          });
+        })
+        // We got an issue with the api call, set the state of the component to warn the use if the issue and log the error.
+        .catch(e => window.console.log(e));
+
+    }, 500);
   }
 
   _setCurrentVideo(videoId) {
@@ -84,7 +89,7 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
   }
 
   _renderLoading() {
-    return <h1>Loading...</h1>;
+    return (<h1>Loading...</h1>);
   }
 
   _renderVideoPlayer() {

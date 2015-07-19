@@ -97,10 +97,14 @@ let VideoPlayer = class VideoPlayer extends React.Component {
           {this._renderPlayer()}
         </div>
         <div className='nytd-player-description'>
-          <h4>{this.props.playlistCat.title}</h4>
-          <h1>{this.props.video.title}</h1>
-          <h5>By {this.props.video.byline}</h5>
-          <p>{this.props.video.summary}</p>
+          <div className='nytd-player-description-head'>
+            <h4>{this.props.playlistCat.title}</h4>
+            <h1>{this.props.video.title}</h1>
+          </div>
+          <div className='nytd-player-description-content'>
+            <h5>By {this.props.video.byline}</h5>
+            <p>{this.props.video.summary}</p>
+          </div>
         </div>
       </div>
     );
