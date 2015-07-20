@@ -1,7 +1,7 @@
 /* This is a copy of the play button on http://nytimes.com/video */
 @mixin nytd-play-button() {
 
-  &:hover {
+  &:hover, &:active {
     .play-holder {
       .play {
         background-color: #4D7B9F;

@@ -4,6 +4,9 @@
 import React from 'react/addons';
 import cx from 'classnames';
 
+// Custom Components
+import PlayBtn from './common/PlayBtn';
+
 // Component
 let PlaylistItem = class PlaylistItem extends React.Component {
 
@@ -16,17 +19,11 @@ let PlaylistItem = class PlaylistItem extends React.Component {
     let classNames = cx({
       playing: !!this.props.playing
     });
-
-    let cta = (<span className="play-holder"> <p className="play"><i className="icon default"></i></p> </span>);
-    if ( this.props.playing ) {
-      cta = (<span className="now-playing-holder">Now Playing</span>);
-    }
-
     return (
       <li className={classNames} onClick={this._onClick.bind(this)}>
         <span className='thumbnail'>
           <img src={this.props.graphicsDomain + image.url} />
-          {cta}
+          <PlayBtn isPlaying={this.props.playing} />
         </span>
         <span className='category'>{this.props.playlistCat.title}</span>
         <span className='duration'>{this.props.duration}</span>

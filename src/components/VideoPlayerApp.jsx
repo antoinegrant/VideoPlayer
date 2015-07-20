@@ -2,6 +2,8 @@
 
 // React
 import React from 'react/addons';
+import Spinner from 'spin';
+import FastClick from 'fastclick';
 
 // Polyfills
 import 'fetch-polyfill';
@@ -53,7 +55,45 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
         // We got an issue with the api call, set the state of the component to warn the use if the issue and log the error.
         .catch(e => window.console.log(e));
 
-    }, 500);
+    }, 100);
+  }
+
+  componentDidMount() {
+
+    // Enable fastclick
+    FastClick.attach(document.body);
+
+    // Get a reference to the loading spinner element
+    if ( !this.loadingSpinner && this.refs.loadingSpinner ) {
+      this.loadingSpinner = React.findDOMNode(this.refs.loadingSpinner);
+    }
+
+    // Show a spinner while the data is fetched
+    this.spinner = new Spinner({
+      lines: 13,
+      length: 9,
+      width: 2,
+      radius: 20,
+      corners: 1,
+      color: '#666',
+      opacity: 0.15,
+      rotate: 0,
+      direction: 1,
+      speed: 1.5,
+      trail: 78,
+      fps: 20,
+      zIndex: 2e9,
+      hwaccel: true
+    }).spin(this.loadingSpinner);
+  }
+
+  componentDidUpdate() {
+    // Scroll the page to reveal the player
+    window.scrollTo(0, 0);
+    // If we are done loading, we must remove the spinner
+    this.spinner.spin(false);
+    delete this.spinner;
+    return true;
   }
 
   _setCurrentVideo(videoId) {
@@ -89,13 +129,14 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
   }
 
   _renderLoading() {
-    return (<h1>Loading...</h1>);
+    return (<div ref='loadingSpinner' class="loading-pinner" style={{height: 300}}></div>);
   }
 
   _renderVideoPlayer() {
     return (
       <div>
         <VideoPlayer
+          key='video-player'
           video={this.state.currentVideo}
           playCurrentVideo={this.state.playCurrentVideo}
           playlistCat={this.state.playlistCat}
@@ -103,13 +144,14 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
           setNextVideo={this._setNextVideo.bind(this)}
         />
         <Playlist
+          key='playlist'
           currentVideo={this.state.currentVideo}
           playCurrentVideo={this.state.playCurrentVideo}
           playlistCat={this.state.playlistCat}
           playlist={this.state.playlist}
           selectVideo={this._setCurrentVideo.bind(this)}
         />
-      </div>
+    </div>
     );
   }
 

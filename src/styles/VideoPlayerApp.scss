@@ -35,6 +35,12 @@ $elementSpacing: 18px;
 .nytd-player-container {
   color: grey;
 
+  .initializing-msg {
+    display: block;
+    text-align: center;
+    color: #999;
+  }
+
   // Player
   .nytd-player-wrapper {
     position: relative;
@@ -48,6 +54,31 @@ $elementSpacing: 18px;
       /* Make the video take the fullwidth of the viewport */
       margin-left: -$mobileAppContainerMargin;
       margin-right: -$mobileAppContainerMargin;
+    }
+
+    .loading-spinner {
+      display: none;
+      position: absolute;
+      background-color: transparent;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+    }
+
+    .nytd-player-poster {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      @include nytd-play-button();
+
+      img {
+        width: 100%;
+        height: auto;
+      }
     }
   }
 

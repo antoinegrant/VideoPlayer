@@ -2,6 +2,10 @@
 
 // React
 import React from 'react/addons';
+import Spinner from 'spin';
+
+// Custom Components
+import PlayBtn from './common/PlayBtn';
 
 // Component
 let VideoPlayer = class VideoPlayer extends React.Component {
@@ -13,17 +17,63 @@ let VideoPlayer = class VideoPlayer extends React.Component {
   }
 
   componentDidUpdate() {
+
+    // Get a reference to the loading spinner element
+    if ( !this.loadingSpinner && this.refs.loadingSpinner ) {
+      this.loadingSpinner = React.findDOMNode(this.refs.loadingSpinner);
+    }
+
+    // Init and get a reference to the spinner object
+    if ( !this.spinner && this.loadingSpinner ) {
+      this.spinner = new Spinner({
+        lines: 13,
+        length: 9,
+        width: 2,
+        radius: 20,
+        corners: 1,
+        color: '#fff',
+        opacity: 0.15,
+        rotate: 0,
+        direction: 1,
+        speed: 1.5,
+        trail: 78,
+        fps: 20,
+        zIndex: 2e9,
+        hwaccel: true
+      });
+    }
+
+    // Get a reference to the video player element and add html5 video event listeners
     if ( !this.player ) {
       this.player = React.findDOMNode(this.refs.nytdPlayer);
+      this.player.addEventListener('loadstart', this._onLoadStart.bind(this));
+      this.player.addEventListener('loadeddata', this._onLoadedData.bind(this));
       this.player.addEventListener('play', this._onPlay.bind(this));
       this.player.addEventListener('pause', this._onPause.bind(this));
       this.player.addEventListener('ended', this._onEnded.bind(this));
     }
+
+    // Load the new video src
+    this.player.load();
   }
 
   // HTML5 vidoe event callbacks
+  _onLoadStart() {
+    window.console.log('_onLoadStart');
+    if ( this.loadingSpinner && this.spinner ) {
+      this.loadingSpinner.style.display = 'block';
+      this.spinner.spin(this.loadingSpinner);
+    }
+  }
+  _onLoadedData() {
+    window.console.log('_onLoadedData');
+  }
   _onPlay() {
     window.console.log('_onPlay');
+    if ( this.loadingSpinner && this.spinner ) {
+      this.loadingSpinner.style.display = 'none';
+      this.spinner.spin(false);
+    }
   }
   _onPause() {
     window.console.log('_onPause');
@@ -71,19 +121,23 @@ let VideoPlayer = class VideoPlayer extends React.Component {
         this.playerState.isPlaying = true;
       }
 
-      playerElement = <video ref='nytdPlayer' {...playerProps}></video>;
+      playerElement = (<video ref='nytdPlayer' {...playerProps}></video>);
 
     } else {
 
       // Assign the poster props
       let posterProps = {
         id: 'video_' + this.props.video.id,
-        style: {position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'},
         src: this.props.video.graphicsDomain + this.props.video.images[3].url,
         onClick: this._setCurrentVideo.bind(this)
       };
 
-      playerElement = <img {...posterProps} />;
+      playerElement = (
+        <div className='nytd-player-poster'>
+          <img {...posterProps} />
+          <PlayBtn />
+        </div>
+      );
 
     }
 
@@ -94,6 +148,7 @@ let VideoPlayer = class VideoPlayer extends React.Component {
     return (
       <div>
         <div className='nytd-player-wrapper'>
+          <div ref='loadingSpinner' className='loading-spinner'></div>
           {this._renderPlayer()}
         </div>
         <div className='nytd-player-description'>
