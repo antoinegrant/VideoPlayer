@@ -1,7 +1,7 @@
 'use strict';
 
 // React
-import React from 'react/addons';
+import React from 'react';
 import Spinner from 'spin';
 import FastClick from 'fastclick';
 
@@ -13,7 +13,7 @@ import VideoPlayer from './VideoPlayer';
 import Playlist from './Playlist';
 
 // CSS that gets injected in the page
-import 'normalize.css';
+// import 'normalize.css';
 import '../styles/VideoPlayerApp.scss';
 
 // Assets
@@ -91,8 +91,10 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
     // Scroll the page to reveal the player
     window.scrollTo(0, 0);
     // If we are done loading, we must remove the spinner
-    this.spinner.spin(false);
-    delete this.spinner;
+    if ( this.spinner ) {
+      this.spinner.spin(false);
+      delete this.spinner;
+    }
     return true;
   }
 
@@ -129,7 +131,7 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
   }
 
   _renderLoading() {
-    return (<div ref='loadingSpinner' class="loading-pinner" style={{height: 300}}></div>);
+    return (<div ref='loadingSpinner' className="loading-pinner" style={{height: 300}}></div>);
   }
 
   _renderVideoPlayer() {

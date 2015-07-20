@@ -18,7 +18,14 @@ module.exports = {
 
   debug: false,
   devtool: false,
-  entry: './src/components/VideoPlayerApp.jsx',
+  entry: {
+    VideoPlayerApp: './src/components/VideoPlayerApp.jsx',
+    vendors: [
+      'react',
+      'spin',
+      'fetch-polyfill'
+    ]
+  },
 
   stats: {
     colors: true,
@@ -30,6 +37,7 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
     new webpack.NoErrorsPlugin()
   ],
 

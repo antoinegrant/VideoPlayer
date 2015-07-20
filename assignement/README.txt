@@ -18,7 +18,10 @@ Use the provided json data file and create a playlist with an HTML5 video elemen
 
 Treat this as though you would release it to production.
 
-This should be representative of how you would approach a problem that you would feel comfortable launching.  The length of time spent to complete this exercise will not affect our evaluation. We understand that you are likely to have many things, both personally and professionally, that may slow you down. Your code will, however, be evaluated for style, simplicity and maintainability.
+This should be representative of how you would approach a problem that you would feel comfortable launching.
+The length of time spent to complete this exercise will not affect our evaluation.
+We understand that you are likely to have many things, both personally and professionally,
+that may slow you down. Your code will, however, be evaluated for style, simplicity and maintainability.
 
 If there are any questions please reach out.
 

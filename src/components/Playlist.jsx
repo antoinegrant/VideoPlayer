@@ -1,7 +1,7 @@
 'use strict';
 
 // React
-import React from 'react/addons';
+import React from 'react';
 
 // Custom Components
 import PlaylistItem from './PlaylistItem';

@@ -1,7 +1,7 @@
 'use strict';
 
 // React
-import React from 'react/addons';
+import React from 'react';
 
 // Component
 let PlayBtn = class PlayBtn extends React.Component {

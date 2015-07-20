@@ -17,10 +17,17 @@ module.exports = {
   cache: true,
   debug: true,
   devtool: 'sourcemap',
-  entry: [
-      'webpack/hot/only-dev-server',
-      './src/components/VideoPlayerApp'
-  ],
+  entry: {
+    VideoPlayerApp: [
+        'webpack/hot/only-dev-server',
+        './src/components/VideoPlayerApp'
+    ],
+    vendors: [
+      'react',
+      'spin',
+      'fetch-polyfill'
+    ]
+  },
 
   stats: {
     colors: true,
@@ -35,6 +42,7 @@ module.exports = {
       'components': __dirname + '/src/components/'
     }
   },
+
   module: {
     preLoaders: [{
       test: /\.(js|jsx)$/,
@@ -58,7 +66,8 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js')
   ]
 
 };
