@@ -29,5 +29,10 @@ Thank you,
 The NYT Video Team
 
 
-- Choosing the right image
-- Make it NYTimesian
+- Render the player to the left and the description to the right on desktop
+- Make the 'Now Playing' thumbnail a black overlay
+- The play button should be bigger on the video player poster
+- Validate the props on all components
+- Add more comments
+- Make sure the dist page works as expected
+- Make sure npm install installs all required package

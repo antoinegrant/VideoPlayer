@@ -25,7 +25,8 @@ module.exports = {
     vendors: [
       'react',
       'spin',
-      'fetch-polyfill'
+      'fetch-polyfill',
+      'fastclick'
     ]
   },
 

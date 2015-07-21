@@ -1,19 +1,19 @@
 'use strict';
 
-// React
+// Vendors
 import React from 'react';
-import Spinner from 'spin';
 import FastClick from 'fastclick';
 
 // Polyfills
 import 'fetch-polyfill';
+import '../vendors/scripts/polyfills';
 
 // Custom Components
 import VideoPlayer from './VideoPlayer';
 import Playlist from './Playlist';
+import Spinner from './common/Spinner';
 
 // CSS that gets injected in the page
-// import 'normalize.css';
 import '../styles/VideoPlayerApp.scss';
 
 // Assets
@@ -23,7 +23,7 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
 
   constructor(props) {
     super(props);
-    // Set the inital component state
+    // Set the initial component state
     this.state = {
       isLoading: true,
       currentVideo: null,
@@ -33,68 +33,78 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
 
   componentWillMount() {
 
-    /* Simulate a wait time for the service call to complete */
+    // Simulate a wait time for the service call to complete
     window.setTimeout(() => {
 
       // Fetch the data
       fetch('/api/playlist.json')
         // Parse the response to json
         .then(r => r.json())
-        .then(json => {
+        .then(playlist => {
           // Update the state of the component with the json response and turning the isLoadig flag to false which triggers a re-render
           this.setState({
+            // We got the data, we are not loading anymore.
             isLoading: false,
-            playlistCat: {  /* Hardoced for the assignment */
+            // Hard-coded for this assignment, since we are not getting that information.
+            playlistCat: {
               id: 'travel',
               title: 'Travel'
             },
-            playlist: json,
-            currentVideo: json[0]  /* Defaults to the first video */
+            playlist: playlist,
+            // Defaults to the first video
+            currentVideo: playlist[0]
           });
         })
         // We got an issue with the api call, set the state of the component to warn the use if the issue and log the error.
         .catch(e => window.console.log(e));
 
     }, 100);
+
+    // Attach a window reszie event to calculate the breakpoints
+    let forceUpdate = false;
+    let breakpoints = [
+      {key: 'small', w: 500},  // Mobile
+      {key: 'medium', w: 768},  // Tablet
+      {key: 'big', w: 980},  // Desktop
+      {key: 'x-big', w: 1200}  // Big Desktop
+    ];
+    let currentBreakpoint = '02';
+    window.addEventListener('optimizedResize', () => {
+        let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        if ( currentBreakpoint !== breakpoints[0].key && w < breakpoints[0].w ) {
+          currentBreakpoint = breakpoints[0].key;
+          forceUpdate = true;
+        }
+        else if ( currentBreakpoint !== breakpoints[1].key && w >= breakpoints[0].w && w < breakpoints[1].w ) {
+          currentBreakpoint = breakpoints[1].key;
+          forceUpdate = true;
+        }
+        else if ( currentBreakpoint !== breakpoints[2].key && w >= breakpoints[1].w && w < breakpoints[2].w ) {
+          currentBreakpoint = breakpoints[2].key;
+          forceUpdate = true;
+        }
+        else if ( currentBreakpoint !== breakpoints[3].key && w >= breakpoints[2].w && w < breakpoints[3].w ) {
+          currentBreakpoint = breakpoints[3].key;
+          forceUpdate = true;
+        }
+        if ( forceUpdate ) {
+          window.console.log('forceUpdate', currentBreakpoint);
+          forceUpdate = false;
+          this.forceUpdate();
+        }
+    });
+
   }
 
   componentDidMount() {
-
-    // Enable fastclick
+    // Remove the tap delay for touch devices
     FastClick.attach(document.body);
-
-    // Get a reference to the loading spinner element
-    if ( !this.loadingSpinner && this.refs.loadingSpinner ) {
-      this.loadingSpinner = React.findDOMNode(this.refs.loadingSpinner);
-    }
-
-    // Show a spinner while the data is fetched
-    this.spinner = new Spinner({
-      lines: 13,
-      length: 9,
-      width: 2,
-      radius: 20,
-      corners: 1,
-      color: '#666',
-      opacity: 0.15,
-      rotate: 0,
-      direction: 1,
-      speed: 1.5,
-      trail: 78,
-      fps: 20,
-      zIndex: 2e9,
-      hwaccel: true
-    }).spin(this.loadingSpinner);
   }
 
   componentDidUpdate() {
     // Scroll the page to reveal the player
     window.scrollTo(0, 0);
-    // If we are done loading, we must remove the spinner
-    if ( this.spinner ) {
-      this.spinner.spin(false);
-      delete this.spinner;
-    }
+    // Return true so the component can update
     return true;
   }
 
@@ -112,6 +122,7 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
     this.state.playlist.every(item => {
       if ( choosNext === true ) {
         nextVideo = item;
+        // We found the next video, stop the iteration.
         return false;
       }
       else if ( item.id === videoId ) {
@@ -119,7 +130,7 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
       }
       return true;
     });
-    // If we didn't find the next video because we fail off the playlist, choose the first video to loop back to the begining.
+    // If we didn't find the next video because we fail off the playlist array, choose the first video to loop back to the beginning.
     if ( !nextVideo ) {
       nextVideo = this.state.playlist[0];
     }
@@ -131,7 +142,11 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
   }
 
   _renderLoading() {
-    return (<div ref='loadingSpinner' className="loading-pinner" style={{height: 300}}></div>);
+    return (
+      <div style={{position: 'relative', height: 300}}>
+        <Spinner ref='loadingSpinner' color='#ccc' />
+      </div>
+    );
   }
 
   _renderVideoPlayer() {
@@ -159,7 +174,7 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
 
   render() {
     return (
-      <div className="nytd-player-inner">
+      <div className='nytd-player-inner'>
         {this.state.isLoading ? this._renderLoading() : this._renderVideoPlayer()}
       </div>
     );

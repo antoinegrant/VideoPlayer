@@ -6,6 +6,7 @@ import cx from 'classnames';
 
 // Custom Components
 import PlayBtn from './common/PlayBtn';
+import ResponsiveImage from './common/ResponsiveImage';
 
 // Component
 let PlaylistItem = class PlaylistItem extends React.Component {
@@ -15,14 +16,13 @@ let PlaylistItem = class PlaylistItem extends React.Component {
   }
 
   render() {
-    let image = this.props.images[4];
     let classNames = cx({
       playing: !!this.props.playing
     });
     return (
       <li className={classNames} onClick={this._onClick.bind(this)}>
         <span className='thumbnail'>
-          <img src={this.props.graphicsDomain + image.url} />
+          <ResponsiveImage graphicsDomain={this.props.graphicsDomain} images={this.props.images} />
           <PlayBtn isPlaying={this.props.playing} />
         </span>
         <span className='category'>{this.props.playlistCat.title}</span>
