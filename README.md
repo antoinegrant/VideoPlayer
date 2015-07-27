@@ -10,8 +10,10 @@
 - Karma
 - Jasmine
 
-#### NOTE:
-One area where i could of spent more time is in the Unit Test. It's a little rudimentary but all components has at least one test expect for VideoPlayerApp.jsx which Involed some time I couldn't spare at this time.
+I architected the video player/playlist to be a standalone component that can be instanciate multiple times on a page. The components bundle containes the js and the css necessary to render itself. Only the vendors.js bundle is an external dependancy of the video player/playlist component. I made the assuption that these external libs would already be loaded on the page.
+
+##### NOTE:
+One area where i could of spent more time is in the Unit Tests. It's a little rudimentary but all components has at least one test, except for VideoPlayerApp.jsx which involved some time I couldn't spare at this time.
 
 
 #### Instructions:
