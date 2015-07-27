@@ -18,6 +18,20 @@ class PlaylistItem extends React.Component {
     this.props.onClick(this.props.id);
   }
 
+  _formatDuration(duration) {
+    duration = duration / 60000;
+    let min = duration.toString().split('.')[0] || '';
+    let sec = duration.toString().split('.')[1] || '';
+    let secChars = '0';
+    if ( sec.length >= 2 ) {
+      secChars = Math.round((60 * ( parseInt(sec.substring(0, 2) * 10)) / 10) / 100);
+    }
+    if ( secChars.toString().length < 2 ) {
+      secChars = '0' + secChars;
+    }
+    return min + ':' + secChars;
+  }
+
   /**
    * Renders the playlist item
    * @ return {ReactComponent}
@@ -33,7 +47,7 @@ class PlaylistItem extends React.Component {
           <PlayBtn isPlaying={this.props.isPlaying} />
         </span>
         <span className='category'>{this.props.playlistCat.title}</span>
-        <span className='duration'>{this.props.duration}</span>
+        <span className='duration'>{this._formatDuration(this.props.duration)}</span>
         <span className='title'>{this.props.title}</span><br />
       </li>
     );
@@ -51,7 +65,9 @@ PlaylistItem.propTypes = {
   id: React.PropTypes.string.isRequired,
   isPlaying: React.PropTypes.bool,
   playlistCat: React.PropTypes.object.isRequired,
-  duration: React.PropTypes.number.isRequired
+  duration: React.PropTypes.number.isRequired,
+  graphicsDomain: React.PropTypes.string.isRequired,
+  images: React.PropTypes.array.isRequired
 };
 
 export default PlaylistItem;

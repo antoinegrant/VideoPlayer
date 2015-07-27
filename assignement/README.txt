@@ -27,6 +27,3 @@ If there are any questions please reach out.
 
 Thank you,
 The NYT Video Team
-
-
-- Make sure npm install installs all required package

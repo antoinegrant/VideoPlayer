@@ -65,7 +65,7 @@ class VideoPlayerApp extends React.Component {
           window.console.error('The service call failed.', e);
         });
 
-    }, 10);
+    }, 10); // NOTE: Increase the milliseconds to simulate a long waiting time from the service call.
 
     // Attach a window reszie event to calculate the breakpoints
     let forceUpdate = false;
