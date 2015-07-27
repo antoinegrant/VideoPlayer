@@ -1,3 +1,4 @@
+@import 'fonts';
 @import './mixins/buttons';
 
 /* Variables */
@@ -48,6 +49,8 @@ $bp-x-big: 1200px; // Big Desktop
 
 .nytd-player-container {
   color: grey;
+  font-family: 'cheltenhm_btroman', Georgia, serif;
+  letter-spacing: 0.01em;
 
   .initializing-msg {
     display: block;
@@ -57,6 +60,7 @@ $bp-x-big: 1200px; // Big Desktop
 
   // Player
   .nytd-player-description-wrapper {
+    position: relative;
     @include clearfix();
     background-color: white;
 
@@ -97,6 +101,7 @@ $bp-x-big: 1200px; // Big Desktop
         right: 0;
         bottom: 0;
         left: 0;
+
         @include nytd-play-button();
 
         img {
@@ -114,9 +119,11 @@ $bp-x-big: 1200px; // Big Desktop
     margin: 0;
 
     @media (min-width: $bp-big) {
-      width: 32%;
-      float: left;
-      padding-right: 0;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 35%;
     }
 
     .nytd-player-description-head {
@@ -126,13 +133,11 @@ $bp-x-big: 1200px; // Big Desktop
       h4 {
         font-size: 14px;
         color: #d9471e;
-        font-family: Georgia,serif;
         font-weight: bold;
         text-transform: uppercase;
         margin: 10px 0;
       }
       h1 {
-        font-family: Georgia,serif;
         font-size: 40px;
         color: #333333;
         font-weight: 500;
@@ -140,6 +145,9 @@ $bp-x-big: 1200px; // Big Desktop
         padding: 0;
 
         @media (min-width: $bp-big) {
+          font-size: 28px;
+        }
+        @media (min-width: $bp-x-big) {
           font-size: 34px;
         }
       }
@@ -149,7 +157,7 @@ $bp-x-big: 1200px; // Big Desktop
       padding: 10px 0 $elementSpacing 0;
 
       h5 {
-        font-size: 12px;
+        font-size: 16px;
         color: #888;
         font-weight: 400;
         letter-spacing: 0.5px;
@@ -157,9 +165,8 @@ $bp-x-big: 1200px; // Big Desktop
         padding: 0;
       }
       p {
-        font-family: georgia,'times new roman',serif;
         color: #444;
-        font-size: 14px;
+        font-size: 16px;
         line-height: 24px;
       }
     }
@@ -221,16 +228,34 @@ $bp-x-big: 1200px; // Big Desktop
           }
         }
 
-        &.playing {
+        &.is-playing {
           color: #537d9d;
-          .thumbnail img {
+          .thumbnail:before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 4px;
+            left: 0;
+            background: black;
             opacity: 0.5;
+          }
+        }
+
+        &:hover, &:active {
+          .thumbnail .play-holder {
+            .play {
+              background-color: #4D7B9F;
+              border-color: #4D7B9F;
+            }
           }
         }
 
         .thumbnail {
           display: block;
           position: relative;
+          margin-bottom: 8px;
 
           img {
               width: 100%;
@@ -248,7 +273,7 @@ $bp-x-big: 1200px; // Big Desktop
 
         }
         .category {
-          font-size: 13px;
+          font-size: 15px;
           font-weight: 400;
           color: #888;
           margin: 1px 0 9px 0;
@@ -257,13 +282,17 @@ $bp-x-big: 1200px; // Big Desktop
         }
         .title {
           display: block;
-          font-family: arial,helvetica,sans-serif;
           font-weight: 500;
-          font-size: 13px;
-          line-height: 26px;
+          font-size: 25px;
+          color: black;
+          line-height: 30px;
+          margin-top: 8px;
+        }
+        &:hover .title {
+          color: #537d9d;
         }
         .duration {
-          font-size: 12px;
+          font-size: 14px;
           margin-left: 12px;
           color: #aaa;
           cursor: default;

@@ -10,7 +10,7 @@ var webpack = require('webpack');
 module.exports = {
 
   output: {
-    filename: 'VideoPlayerApp.js',
+    filename: '[name].js',
     publicPath: '/assets/'
   },
 
@@ -18,9 +18,9 @@ module.exports = {
   debug: true,
   devtool: 'sourcemap',
   entry: {
-    VideoPlayerApp: [
+    videoPlayerApp: [
         'webpack/hot/only-dev-server',
-        './src/components/VideoPlayerApp'
+        './src/javascripts/videoPlayerApp'
     ],
     vendors: [
       'react',
@@ -36,11 +36,12 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.scss'],
     alias: {
-      'styles': __dirname + '/src/styles',
+      'stylesheets': __dirname + '/src/stylesheets',
       'mixins': __dirname + '/src/mixins',
-      'components': __dirname + '/src/components/'
+      'components': __dirname + '/src/javascripts/components/',
+      'vendors': __dirname + '/src/vendors/'
     }
   },
 
@@ -61,7 +62,7 @@ module.exports = {
       test: /\.css$/,
       loader: 'style-loader!css-loader'
     }, {
-      test: /\.(png|jpg|woff|woff2)$/,
+      test: /\.(png|jpg|eot|woff|woff2|ttf|svg)$/,
       loader: 'url-loader?limit=8192'
     }]
   },

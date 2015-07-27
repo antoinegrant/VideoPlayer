@@ -87,8 +87,28 @@ module.exports = function (grunt) {
           {
             flatten: true,
             expand: true,
+            src: ['<%= pkg.src %>/api/*'],
+            dest: '<%= pkg.dist %>/api/'
+          },
+          {
+            flatten: true,
+            expand: true,
             src: ['<%= pkg.src %>/images/*'],
             dest: '<%= pkg.dist %>/images/'
+          },
+          {
+            flatten: true,
+            expand: true,
+            src: ['<%= pkg.src %>/stylesheets/*.css'],
+            dest: '<%= pkg.dist %>/stylesheets/',
+            filter: 'isFile'
+          },
+          {
+            flatten: true,
+            expand: true,
+            src: ['<%= pkg.src %>/vendors/stylesheets/*.css'],
+            dest: '<%= pkg.dist %>/vendors/stylesheets/',
+            filter: 'isFile'
           }
         ]
       }
@@ -108,7 +128,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'open:dist', 'connect:dist']);
+      // return grunt.task.run(['build', 'open:dist', 'connect:dist']);
+      return grunt.task.run(['build', 'connect:dist']);
     }
 
     grunt.task.run([

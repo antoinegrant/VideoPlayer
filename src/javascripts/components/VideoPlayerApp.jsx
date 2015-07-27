@@ -6,31 +6,36 @@ import FastClick from 'fastclick';
 
 // Polyfills
 import 'fetch-polyfill';
-import '../vendors/scripts/polyfills';
+import 'vendors/javascripts/polyfills';
 
 // Custom Components
-import VideoPlayer from './VideoPlayer';
-import Playlist from './Playlist';
-import Spinner from './common/Spinner';
+import VideoPlayer from 'components/VideoPlayer';
+import Playlist from 'components/Playlist';
+import Spinner from 'components/common/Spinner';
 
 // CSS that gets injected in the page
-import '../styles/VideoPlayerApp.scss';
+import 'stylesheets/VideoPlayerApp';
 
 // Assets
 
 // Component
-let VideoPlayerApp = class VideoPlayerApp extends React.Component {
+class VideoPlayerApp extends React.Component {
 
   constructor(props) {
     super(props);
     // Set the initial component state
     this.state = {
       isLoading: true,
-      currentVideo: null,
-      playCurrentVideo: false
+      playCurrentVideo: false,
+      playlistCat: {},
+      playlist: [],
+      currentVideo: {}
     };
   }
 
+  /**
+   * Gets the data from the server and sets up the responsive logic.
+   */
   componentWillMount() {
 
     // Simulate a wait time for the service call to complete
@@ -56,9 +61,11 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
           });
         })
         // We got an issue with the api call, set the state of the component to warn the use if the issue and log the error.
-        .catch(e => window.console.log(e));
+        .catch(e => {
+          window.console.error('The service call failed.', e);
+        });
 
-    }, 100);
+    }, 10);
 
     // Attach a window reszie event to calculate the breakpoints
     let forceUpdate = false;
@@ -66,29 +73,33 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
       {key: 'small', w: 500},  // Mobile
       {key: 'medium', w: 768},  // Tablet
       {key: 'big', w: 980},  // Desktop
-      {key: 'x-big', w: 1200}  // Big Desktop
+      {key: 'x-big', w: 1200}  // Large Desktop
     ];
-    let currentBreakpoint = '02';
+    let currentBreakpoint = 'small';
     window.addEventListener('optimizedResize', () => {
         let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        // If the current break point is not small and the client width is smaller than the 500, force update the component.
         if ( currentBreakpoint !== breakpoints[0].key && w < breakpoints[0].w ) {
           currentBreakpoint = breakpoints[0].key;
           forceUpdate = true;
         }
+        // If the current break point is not medium and the client width is smaller than the 768, force update the component.
         else if ( currentBreakpoint !== breakpoints[1].key && w >= breakpoints[0].w && w < breakpoints[1].w ) {
           currentBreakpoint = breakpoints[1].key;
           forceUpdate = true;
         }
+        // If the current break point is not big and the client width is smaller than the 980, force update the component.
         else if ( currentBreakpoint !== breakpoints[2].key && w >= breakpoints[1].w && w < breakpoints[2].w ) {
           currentBreakpoint = breakpoints[2].key;
           forceUpdate = true;
         }
+        // If the current break point is not x-big and the client width is smaller than the 1200, force update the component.
         else if ( currentBreakpoint !== breakpoints[3].key && w >= breakpoints[2].w && w < breakpoints[3].w ) {
           currentBreakpoint = breakpoints[3].key;
           forceUpdate = true;
         }
+        // If we found that the breakpoint has changes, force update the component.
         if ( forceUpdate ) {
-          window.console.log('forceUpdate', currentBreakpoint);
           forceUpdate = false;
           this.forceUpdate();
         }
@@ -96,25 +107,30 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
 
   }
 
+  /**
+   * The component is now rendered to the DOM, lets add the fastclick library to get rid of the tap delay on touch devices.
+   */
   componentDidMount() {
-    // Remove the tap delay for touch devices
     FastClick.attach(document.body);
   }
 
-  componentDidUpdate() {
+  /**
+   * Set the current video on the component state.
+   */
+  _setCurrentVideo(videoId) {
     // Scroll the page to reveal the player
     window.scrollTo(0, 0);
-    // Return true so the component can update
-    return true;
-  }
-
-  _setCurrentVideo(videoId) {
+    // Set current video on the component state.
     this.setState({
       currentVideo: this.state.playlist.filter(item => item.id === videoId)[0],
       playCurrentVideo: true
     });
   }
 
+  /**
+   * Sets the next video as the current video and set the playCurrentVideo to true so the video starts playing.
+   * If we got to the end of the playlist, play the playlist from the begining.
+   */
   _setNextVideo(videoId) {
     let nextVideo;
     let choosNext = false;
@@ -134,13 +150,17 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
     if ( !nextVideo ) {
       nextVideo = this.state.playlist[0];
     }
-
+    // Set current video on the component state.
     this.setState({
       currentVideo: nextVideo,
       playCurrentVideo: true
     });
   }
 
+  /**
+   * Renders a spinner
+   * @return {ReactComponent}
+   */
   _renderLoading() {
     return (
       <div style={{position: 'relative', height: 300}}>
@@ -149,6 +169,10 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
     );
   }
 
+  /**
+   * Renders the video player and the playlist.
+   * @return {ReactComponent}
+   */
   _renderVideoPlayer() {
     return (
       <div>
@@ -168,10 +192,14 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
           playlist={this.state.playlist}
           selectVideo={this._setCurrentVideo.bind(this)}
         />
-    </div>
+      </div>
     );
   }
 
+  /**
+   * Renders the wrapper for the spinner or the video player depending on the isLoading flag.
+   * @return {ReactComponent}
+   */
   render() {
     return (
       <div className='nytd-player-inner'>
@@ -180,10 +208,6 @@ let VideoPlayerApp = class VideoPlayerApp extends React.Component {
     );
   }
 
-};
+}
 
-
-// Bootstrap the VideoPlayerApp to the DOM
-React.render(<VideoPlayerApp />, document.getElementById('nytd-player-container')); // jshint ignore:line
-
-module.exports = VideoPlayerApp;
+export default VideoPlayerApp;

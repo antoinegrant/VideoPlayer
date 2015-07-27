@@ -13,13 +13,13 @@ module.exports = {
   output: {
     publicPath: '/assets/',
     path: 'dist/assets/',
-    filename: 'VideoPlayerApp.js'
+    filename: '[name].js'
   },
 
   debug: false,
   devtool: false,
   entry: {
-    VideoPlayerApp: './src/components/VideoPlayerApp.jsx',
+    videoPlayerApp: __dirname + '/src/javascripts/videoPlayerApp',
     vendors: [
       'react',
       'spin',
@@ -43,11 +43,12 @@ module.exports = {
   ],
 
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.scss'],
     alias: {
-      'styles': __dirname + '/src/styles',
+      'stylesheets': __dirname + '/src/stylesheets',
       'mixins': __dirname + '/src/mixins',
-      'components': __dirname + '/src/components/'
+      'components': __dirname + '/src/javascripts/components/',
+      'vendors': __dirname + '/src/vendors/'
     }
   },
 
@@ -68,7 +69,7 @@ module.exports = {
       test: /\.scss/,
       loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
     }, {
-      test: /\.(png|jpg|woff|woff2)$/,
+      test: /\.(png|jpg|eot|woff|woff2|ttf|svg)$/,
       loader: 'url-loader?limit=8192'
     }]
   }

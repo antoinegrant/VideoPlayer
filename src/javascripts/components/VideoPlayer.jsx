@@ -5,12 +5,12 @@ import React from 'react';
 // import Spin from 'spin';
 
 // Custom Components
-import PlayBtn from './common/PlayBtn';
-import Spinner from './common/Spinner';
-import ResponsiveImage from './common/ResponsiveImage';
+import PlayBtn from 'components/common/PlayBtn';
+import Spinner from 'components/common/Spinner';
+import ResponsiveImage from 'components/common/ResponsiveImage';
 
 // Component
-let VideoPlayer = class VideoPlayer extends React.Component {
+class VideoPlayer extends React.Component {
 
   constructor(props) {
     super(props);
@@ -35,7 +35,9 @@ let VideoPlayer = class VideoPlayer extends React.Component {
     }
   }
 
-  // HTML5 video event callbacks
+  /**
+   * HTML5 video event callbacks
+   */
   _onLoadStart() {
     this.setState({
       isVideoLoading: true
@@ -98,16 +100,14 @@ let VideoPlayer = class VideoPlayer extends React.Component {
 
     // Assign the poster props
     let posterProps = {
-      id: 'video_' + this.props.video.id,
-      onClick: this._setCurrentVideo.bind(this)
+      id: 'video_' + this.props.video.id
     };
 
     // If we don't want to play video on load, show a poster instead
     if ( !this.props.playCurrentVideo ) {
       return (
-        <div className='nytd-player-poster'>
+        <div className='nytd-player-poster' onClick={this._setCurrentVideo.bind(this)}>
           <ResponsiveImage graphicsDomain={this.props.video.graphicsDomain} images={this.props.video.images} {...posterProps} />
-          <img {...this.posterProps} />
           <PlayBtn />
         </div>
       );
@@ -116,6 +116,9 @@ let VideoPlayer = class VideoPlayer extends React.Component {
     return (<video ref='nytdPlayer' {...playerProps}></video>);
   }
 
+  /**
+   * Renders the component to the DOM
+   */
   render() {
     return (
       <div className='nytd-player-description-wrapper'>
@@ -138,6 +141,30 @@ let VideoPlayer = class VideoPlayer extends React.Component {
       </div>
     );
   }
+}
+
+// Define the default properties
+VideoPlayer.defaultProps = {
+  playCurrentVideo: false
 };
 
-module.exports = VideoPlayer;
+// Validate the properties
+VideoPlayer.propTypes = {
+  playCurrentVideo: React.PropTypes.bool,
+  setNextVideo: React.PropTypes.func.isRequired,
+  setCurrentVideo: React.PropTypes.func.isRequired,
+  playlistCat: React.PropTypes.shape({
+    id: React.PropTypes.string,
+    title: React.PropTypes.string
+  }).isRequired,
+  video: React.PropTypes.shape({
+    id: React.PropTypes.string,
+    summary: React.PropTypes.string,
+    byline: React.PropTypes.string,
+    graphicsDomain: React.PropTypes.string,
+    images: React.PropTypes.array,
+    renditions: React.PropTypes.array
+  }).isRequired
+};
+
+export default VideoPlayer;

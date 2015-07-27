@@ -8,49 +8,44 @@ module.exports = function (config) {
     frameworks: ['jasmine'],
     files: [
       'test/helpers/pack/**/*.js',
+      'test/helpers/mocks/**/*.json',
       'test/helpers/react/**/*.js',
-      'test/spec/components/**/*.js'
+      'test/spec/components/**/*.spec.jsx'
     ],
     preprocessors: {
       'test/helpers/createComponent.js': ['webpack'],
-      'test/spec/components/**/*.js': ['webpack'],
-      'test/spec/components/**/*.jsx': ['webpack']
+      'test/spec/components/**/*.spec.js': ['webpack'],
+      'test/spec/components/**/*.spec.jsx': ['webpack']
     },
     webpack: {
       cache: true,
       module: {
         loaders: [{
-          test: /\.gif/,
-          loader: 'url-loader?limit=10000&mimetype=image/gif'
-        }, {
-          test: /\.jpg/,
-          loader: 'url-loader?limit=10000&mimetype=image/jpg'
-        }, {
-          test: /\.png/,
-          loader: 'url-loader?limit=10000&mimetype=image/png'
-        }, {
           test: /\.(js|jsx)$/,
-          loader: 'babel-loader',
-          exclude: /node_modules/
+          exclude: /node_modules/,
+          loader: 'react-hot!babel-loader'
         }, {
-          test: /\.sass/,
+          test: /\.scss/,
           loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
         }, {
           test: /\.css$/,
           loader: 'style-loader!css-loader'
         }, {
-          test: /\.woff/,
-          loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+          test: /\.(png|jpg|eot|woff|woff2|ttf|svg)$/,
+          loader: 'url-loader?limit=8192'
         }, {
-          test: /\.woff2/,
-          loader: 'url-loader?limit=10000&mimetype=application/font-woff2'
+          test: /\.json$/,
+          loader: 'json-loader'
         }]
       },
       resolve: {
+        extensions: ['', '.js', '.jsx', '.scss'],
         alias: {
-          'styles': path.join(process.cwd(), './src/styles/'),
-          'components': path.join(process.cwd(), './src/components/'),
-          'helpers': path.join(process.cwd(), './test/helpers/')
+          'stylesheets': path.join(process.cwd(), './src/stylesheets/'),
+          'components': path.join(process.cwd(), './src/javascripts/components/'),
+          'helpers': path.join(process.cwd(), './test/helpers/'),
+          'mocks': path.join(process.cwd(), './test/helpers/mocks/'),
+          'vendors': path.join(process.cwd(), './src/vendors/')
         }
       }
     },
@@ -64,11 +59,11 @@ module.exports = function (config) {
     port: 8080,
     logLevel: config.LOG_INFO,
     colors: true,
-    autoWatch: true,
+    autoWatch: false,
     browsers: ['PhantomJS'],
     reporters: ['dots'],
     captureTimeout: 60000,
-    singleRun: false,
+    singleRun: true,
     plugins: [
         require('karma-webpack'),
         require('karma-jasmine'),

@@ -5,7 +5,7 @@ import React from 'react';
 import Spin from 'spin';
 
 // Component
-let Spinner = class Spinner extends React.Component {
+class Spinner extends React.Component {
 
   componentDidMount() {
     // Instantiate the Spin object
@@ -37,10 +37,11 @@ let Spinner = class Spinner extends React.Component {
       <span style={{position: 'absolute', top: 0, right: 0, bottom: 0, left: 0}} ref="container" />
     );
   }
-};
+}
 
 // Set the default props
 Spinner.defaultProps = {
+  stopped: false,
   lines: 13,
   length: 9,
   width: 2,
@@ -55,6 +56,11 @@ Spinner.defaultProps = {
   fps: 20,
   zIndex: 2e9,
   hwaccel: true
+};
+
+// Validate the properties
+Spinner.propTypes = {
+  stopped: React.PropTypes.bool
 };
 
 module.exports = Spinner;
