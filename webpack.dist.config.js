@@ -66,7 +66,7 @@ module.exports = {
       test: /\.css$/,
       loader: 'style-loader!css-loader'
     }, {
-      test: /\.scss/,
+      test: /\.scss$/,
       loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
     }, {
       test: /\.(png|jpg|eot|woff|woff2|ttf|svg)$/,

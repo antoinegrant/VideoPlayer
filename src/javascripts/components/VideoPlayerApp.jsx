@@ -65,15 +65,15 @@ class VideoPlayerApp extends React.Component {
           window.console.error('The service call failed.', e);
         });
 
-    }, 10); // NOTE: Increase the milliseconds to simulate a long waiting time from the service call.
+    }, 1000); // NOTE: Increase the milliseconds to simulate a long waiting time from the service call.
 
-    // Attach a window reszie event to calculate the breakpoints
+    // Attach a window resize event to calculate the breakpoints
     let forceUpdate = false;
     let breakpoints = [
-      {key: 'small', w: 500},  // Mobile
+      {key: 'small',  w: 500},  // Mobile
       {key: 'medium', w: 768},  // Tablet
-      {key: 'big', w: 980},  // Desktop
-      {key: 'x-big', w: 1200}  // Large Desktop
+      {key: 'big',    w: 980},  // Desktop
+      {key: 'x-big',  w: 1200}  // Large Desktop
     ];
     let currentBreakpoint = 'small';
     window.addEventListener('optimizedResize', () => {
